@@ -2,7 +2,7 @@
     "dev": {
       "driver": "pg",
       "host": "127.0.0.1",
-      "database": "store",
+      "database": "store_dev",
       "user": "this_user",
       "password": "password123"
     },
@@ -10,7 +10,7 @@
       "driver": "pg",
       "host": "127.0.0.1",
       "database": "store_test",
-      "user": "test_user",
+      "user": "this_user",
       "password": "password123"
     }
   }

@@ -8,9 +8,9 @@
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,
       "strict": true,
-      "noImplicitAny": true,
+      "noImplicitAny": false,
       "skipLibCheck": true
     },
     "include": ["./src"],
-    "exclude": ["node_modules", "spec", "dist"]
+    "exclude": ["node_modules", "spec", "migrations", "dist"]
 }
