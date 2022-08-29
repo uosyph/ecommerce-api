@@ -1,12 +1,11 @@
-import client from "../database";
+import client from '../database';
 
 export type User = {
-    id: Number;
-    firstName: String;
-    secondName: String;
-    password: String;
+    id: number;
+    firstName: string;
+    secondName: string;
+    password: string;
 };
-
 
 export class StoreUser {
     async index(): Promise<User[]> {
@@ -40,7 +39,11 @@ export class StoreUser {
             const sql =
                 'INSERT INTO users (firstName, secondName, password) VALUES($1, $2, $3) RETURNING *;';
             const con = await client.connect();
-            const result = await con.query(sql, [b.firstName, b.secondName, b.password]);
+            const result = await con.query(sql, [
+                b.firstName,
+                b.secondName,
+                b.password,
+            ]);
             const usr = result.rows[0];
 
             con.release();
@@ -62,9 +65,7 @@ export class StoreUser {
 
             return usr;
         } catch (err) {
-            throw new Error(
-                `Could not delete User id: ${id}... Error: ${err}`
-            );
+            throw new Error(`Could not delete User id: ${id}... Error: ${err}`);
         }
     }
 }
