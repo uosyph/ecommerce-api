@@ -48,7 +48,11 @@ class StoreUser {
             try {
                 const sql = 'INSERT INTO users (firstName, secondName, password) VALUES($1, $2, $3) RETURNING *;';
                 const con = yield database_1.default.connect();
-                const result = yield con.query(sql, [b.firstName, b.secondName, b.password]);
+                const result = yield con.query(sql, [
+                    b.firstName,
+                    b.secondName,
+                    b.password,
+                ]);
                 const usr = result.rows[0];
                 con.release();
                 return usr;

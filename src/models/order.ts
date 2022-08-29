@@ -1,6 +1,7 @@
 import client from '../database';
 
 export type Order = {
+    [x: string]: any;
     id: number;
     quantity: number;
     status: boolean;
