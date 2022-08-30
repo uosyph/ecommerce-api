@@ -32,8 +32,8 @@ class StoreOrder {
     show(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'SELECT * FROM orders WHERE id=($1);';
                 const con = yield database_1.default.connect();
+                const sql = 'SELECT * FROM orders WHERE id=($1);';
                 const result = yield con.query(sql, [id]);
                 con.release();
                 return result.rows[0];
@@ -46,8 +46,8 @@ class StoreOrder {
     create(b) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'INSERT INTO orders (quantity, status, product_id, user_id) VALUES($1, $2, $3, $4) RETURNING *;';
                 const con = yield database_1.default.connect();
+                const sql = 'INSERT INTO orders (quantity, status, product_id, user_id) VALUES($1, $2, $3, $4) RETURNING *;';
                 const result = yield con.query(sql, [
                     b.quantity,
                     b.status,
@@ -63,11 +63,30 @@ class StoreOrder {
             }
         });
     }
+    addProduct(quantity, order_id, product_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const con = yield database_1.default.connect();
+                const sql = 'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3)';
+                const result = yield con.query(sql, [
+                    quantity,
+                    order_id,
+                    product_id,
+                ]);
+                const order = result.rows[0];
+                con.release();
+                return order;
+            }
+            catch (err) {
+                throw new Error('Could not add Product: ${product_id} to Order {order_id}...  ${err}');
+            }
+        });
+    }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'DELETE FROM orders WHERE id=($1);';
                 const con = yield database_1.default.connect();
+                const sql = 'DELETE FROM orders WHERE id=($1);';
                 const result = yield con.query(sql, [id]);
                 const ordr = result.rows[0];
                 con.release();

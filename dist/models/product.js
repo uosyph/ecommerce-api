@@ -32,8 +32,8 @@ class StoreProduct {
     show(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'SELECT * FROM products WHERE id=($1)';
                 const con = yield database_1.default.connect();
+                const sql = 'SELECT * FROM products WHERE id=($1)';
                 const result = yield con.query(sql, [id]);
                 con.release();
                 return result.rows[0];
@@ -46,8 +46,8 @@ class StoreProduct {
     create(b) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'INSERT INTO products (name, type, exp) VALUES($1, $2, $3) RETURNING *';
                 const con = yield database_1.default.connect();
+                const sql = 'INSERT INTO products (name, type, exp) VALUES($1, $2, $3) RETURNING *';
                 const result = yield con.query(sql, [b.name, b.category, b.price]);
                 const prod = result.rows[0];
                 con.release();
@@ -61,8 +61,8 @@ class StoreProduct {
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'DELETE FROM products WHERE id=($1)';
                 const con = yield database_1.default.connect();
+                const sql = 'DELETE FROM products WHERE id=($1)';
                 const result = yield con.query(sql, [id]);
                 const prod = result.rows[0];
                 con.release();

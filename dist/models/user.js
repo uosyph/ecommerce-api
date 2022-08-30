@@ -13,7 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StoreUser = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const database_1 = __importDefault(require("../database"));
+const pepper = process.env.BYCRT_PASSWORD;
+const salt = process.env.SALT_ROUNDS;
 class StoreUser {
     index() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -32,8 +35,8 @@ class StoreUser {
     show(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'SELECT * FROM users WHERE id=($1);';
                 const con = yield database_1.default.connect();
+                const sql = 'SELECT * FROM users WHERE id=($1);';
                 const result = yield con.query(sql, [id]);
                 con.release();
                 return result.rows[0];
@@ -43,30 +46,32 @@ class StoreUser {
             }
         });
     }
-    create(b) {
+    create(u) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'INSERT INTO users (firstName, secondName, password) VALUES($1, $2, $3) RETURNING *;';
                 const con = yield database_1.default.connect();
+                const sql = 'INSERT INTO users (username, firstName, secondName, password) VALUES($1, $2, $3, $4) RETURNING *;';
+                const hashedPW = bcrypt_1.default.hashSync(u.password + pepper, parseInt(salt));
                 const result = yield con.query(sql, [
-                    b.firstName,
-                    b.secondName,
-                    b.password,
+                    u.username,
+                    u.firstName,
+                    u.secondName,
+                    hashedPW,
                 ]);
                 const usr = result.rows[0];
                 con.release();
                 return usr;
             }
             catch (err) {
-                throw new Error(`Could not add new User: ${name}...  ${err}`);
+                throw new Error(`Could not add new User ${u.username}...  ${err}`);
             }
         });
     }
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const sql = 'DELETE FROM users WHERE id=($1);';
                 const con = yield database_1.default.connect();
+                const sql = 'DELETE FROM users WHERE id=($1);';
                 const result = yield con.query(sql, [id]);
                 const usr = result.rows[0];
                 con.release();
@@ -75,6 +80,20 @@ class StoreUser {
             catch (err) {
                 throw new Error(`Could not delete User id: ${id}... Error: ${err}`);
             }
+        });
+    }
+    auth(username, password) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const con = yield database_1.default.connect();
+            const sql = 'SELECT password FROM users WHERE username=($1)';
+            const result = yield con.query(sql, [username]);
+            if (result.rows.length) {
+                const user = result.rows[0];
+                if (bcrypt_1.default.compareSync(password + pepper, user.password)) {
+                    return user;
+                }
+            }
+            return null;
         });
     }
 }

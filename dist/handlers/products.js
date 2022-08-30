@@ -10,8 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = require("../models/product");
+const auth_1 = require("../middleware/auth");
 const product = new product_1.StoreProduct();
-const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield product.index();
     res.json(products);
 });
@@ -25,7 +26,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name: req.body.name,
             price: req.body.price,
             category: req.body.category,
-            id: 0,
+            id: '',
         };
         const newProduct = yield product.create(product);
         res.json(newProduct);
@@ -42,7 +43,7 @@ const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const product_routes = (app) => {
     app.get('/products', index);
     app.get('/products/:id', show);
-    app.post('/products', create);
-    app.delete('/products', destroy);
+    app.post('/products', auth_1.verifyToken, create);
+    app.delete('/products', auth_1.verifyToken, destroy);
 };
 exports.default = product_routes;

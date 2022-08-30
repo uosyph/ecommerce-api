@@ -10,25 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = require("../models/order");
+const auth_1 = require("../middleware/auth");
 const order = new order_1.StoreOrder();
-const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const orders = yield order.index();
     res.json(orders);
 });
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Order = yield order.show(req.body.id);
+    const Order = yield order.show(req.params.id);
     res.json(Order);
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const ordr = {
+        user_id: req.body.user_id,
+        status: true,
+        quantity: 0,
+        product_id: 0,
+    };
     try {
-        const order = {
-            quantity: req.body.user_id,
-            status: req.body.status,
-            product_id: req.body.product_id,
-            user_id: req.body.user_id,
-            id: 0,
-        };
-        const newOrder = yield order.create(order);
+        const newOrder = yield order.create(ordr);
         res.json(newOrder);
     }
     catch (err) {
@@ -36,14 +36,24 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.json(err);
     }
 });
-const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield order.delete(req.body.id);
-    res.json(deleted);
+const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const order_id = req.params.id;
+    const product_id = req.params.prodId;
+    const quantity = parseInt(req.params.qty);
+    try {
+        const addedProduct = yield order.addProduct(quantity, order_id, product_id);
+        res.json(addedProduct);
+    }
+    catch (err) {
+        res.status(400);
+        res.json(err);
+    }
 });
 const order_routes = (app) => {
-    app.get('/orders', index);
-    app.get('/orders/:id', show);
-    app.post('/orders', create);
-    app.delete('/orders', destroy);
+    app.get('/orders', auth_1.verifyToken, index);
+    app.get('/orders/:id', auth_1.verifyToken, show);
+    app.post('/orders', auth_1.verifyToken, create);
+    // app.delete('/orders', verifyToken, destroy);
+    app.put('/orders/:id/products', addProduct);
 };
 exports.default = order_routes;

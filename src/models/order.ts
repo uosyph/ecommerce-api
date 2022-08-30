@@ -2,7 +2,7 @@ import client from '../database';
 
 export type Order = {
     [x: string]: any;
-    id: number;
+    id?: string;
     quantity: number;
     status: boolean;
     product_id: number;
@@ -24,8 +24,8 @@ export class StoreOrder {
 
     async show(id: string): Promise<Order> {
         try {
-            const sql = 'SELECT * FROM orders WHERE id=($1);';
             const con = await client.connect();
+            const sql = 'SELECT * FROM orders WHERE id=($1);';
             const result = await con.query(sql, [id]);
 
             con.release();
@@ -38,9 +38,9 @@ export class StoreOrder {
 
     async create(b: Order): Promise<Order> {
         try {
+            const con = await client.connect();
             const sql =
                 'INSERT INTO orders (quantity, status, product_id, user_id) VALUES($1, $2, $3, $4) RETURNING *;';
-            const con = await client.connect();
             const result = await con.query(sql, [
                 b.quantity,
                 b.status,
@@ -57,10 +57,36 @@ export class StoreOrder {
         }
     }
 
+    async addProduct(
+        quantity: number,
+        order_id: string,
+        product_id: string
+    ): Promise<Order> {
+        try {
+            const con = await client.connect();
+            const sql =
+                'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3)';
+            const result = await con.query(sql, [
+                quantity,
+                order_id,
+                product_id,
+            ]);
+            const order = result.rows[0];
+
+            con.release();
+
+            return order;
+        } catch (err) {
+            throw new Error(
+                'Could not add Product: ${product_id} to Order {order_id}...  ${err}'
+            );
+        }
+    }
+
     async delete(id: string): Promise<Order> {
         try {
-            const sql = 'DELETE FROM orders WHERE id=($1);';
             const con = await client.connect();
+            const sql = 'DELETE FROM orders WHERE id=($1);';
             const result = await con.query(sql, [id]);
             const ordr = result.rows[0];
 
