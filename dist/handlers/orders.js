@@ -49,11 +49,15 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.json(err);
     }
 });
+const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const deleted = yield order.delete(req.body.id);
+    res.json(deleted);
+});
 const order_routes = (app) => {
     app.get('/orders', auth_1.verifyToken, index);
     app.get('/orders/:id', auth_1.verifyToken, show);
     app.post('/orders', auth_1.verifyToken, create);
-    // app.delete('/orders', verifyToken, destroy);
+    app.delete('/orders', auth_1.verifyToken, destroy);
     app.put('/orders/:id/products', addProduct);
 };
 exports.default = order_routes;
