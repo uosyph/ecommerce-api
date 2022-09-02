@@ -5,7 +5,7 @@ import { verifyToken } from '../middleware/auth';
 
 const user = new StoreUser();
 
-const index = async (req: Request, res: Response) => {
+const index = async (_req: Request, res: Response) => {
     const users = await user.index();
     res.json(users);
 };
@@ -88,7 +88,7 @@ const user_routes = (app: express.Application) => {
     app.get('/users/:id', show);
     app.post('/users', verifyToken, create);
     app.delete('/users', verifyToken, destroy);
-    app.use('/users/auth', auth);
+    app.get('/users/auth', auth);
 };
 
 export default user_routes;

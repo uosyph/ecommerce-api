@@ -47,9 +47,8 @@ class StoreOrder {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const con = yield database_1.default.connect();
-                const sql = 'INSERT INTO orders (quantity, status, product_id, user_id) VALUES($1, $2, $3, $4) RETURNING *;';
+                const sql = 'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *;';
                 const result = yield con.query(sql, [
-                    b.quantity,
                     b.status,
                     b.product_id,
                     b.user_id,
@@ -67,7 +66,7 @@ class StoreOrder {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const con = yield database_1.default.connect();
-                const sql = 'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3)';
+                const sql = 'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *';
                 const result = yield con.query(sql, [
                     quantity,
                     order_id,

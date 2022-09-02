@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = require("../models/order");
 const auth_1 = require("../middleware/auth");
 const order = new order_1.StoreOrder();
-const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const orders = yield order.index();
     res.json(orders);
 });
@@ -24,8 +24,6 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const ordr = {
         user_id: req.body.user_id,
         status: true,
-        quantity: 0,
-        product_id: 0,
     };
     try {
         const newOrder = yield order.create(ordr);

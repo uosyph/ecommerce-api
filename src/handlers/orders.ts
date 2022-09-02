@@ -4,7 +4,7 @@ import { verifyToken } from '../middleware/auth';
 
 const order = new StoreOrder();
 
-const index = async (req: Request, res: Response) => {
+const index = async (_req: Request, res: Response) => {
     const orders = await order.index();
     res.json(orders);
 };
@@ -18,8 +18,6 @@ const create = async (req: Request, res: Response) => {
     const ordr: Order = {
         user_id: req.body.user_id,
         status: true,
-        quantity: 0,
-        product_id: 0,
     };
 
     try {

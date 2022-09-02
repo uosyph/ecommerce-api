@@ -4,7 +4,7 @@ import { verifyToken } from '../middleware/auth';
 
 const product = new StoreProduct();
 
-const index = async (req: Request, res: Response) => {
+const index = async (_req: Request, res: Response) => {
     const products = await product.index();
     res.json(products);
 };

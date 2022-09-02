@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = require("../models/product");
 const auth_1 = require("../middleware/auth");
 const product = new product_1.StoreProduct();
-const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield product.index();
     res.json(products);
 });

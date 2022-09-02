@@ -3,9 +3,7 @@ import client from '../database';
 export type Order = {
     [x: string]: any;
     id?: string;
-    quantity: number;
     status: boolean;
-    product_id: number;
     user_id: number;
 };
 
@@ -40,9 +38,8 @@ export class StoreOrder {
         try {
             const con = await client.connect();
             const sql =
-                'INSERT INTO orders (quantity, status, product_id, user_id) VALUES($1, $2, $3, $4) RETURNING *;';
+                'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *;';
             const result = await con.query(sql, [
-                b.quantity,
                 b.status,
                 b.product_id,
                 b.user_id,
@@ -65,7 +62,7 @@ export class StoreOrder {
         try {
             const con = await client.connect();
             const sql =
-                'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3)';
+                'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *';
             const result = await con.query(sql, [
                 quantity,
                 order_id,

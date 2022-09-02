@@ -16,7 +16,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_1 = require("../models/user");
 const auth_1 = require("../middleware/auth");
 const user = new user_1.StoreUser();
-const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const users = yield user.index();
     res.json(users);
 });
