@@ -89,8 +89,8 @@ const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const user_routes = (app) => {
     app.get('/users', index);
     app.get('/users/:id', show);
-    app.post('/users', auth_1.verifyToken, create);
+    app.post('/users', create);
     app.delete('/users', auth_1.verifyToken, destroy);
-    app.use('/users/auth', auth);
+    app.post('/users/auth', auth);
 };
 exports.default = user_routes;

@@ -1,8 +1,6 @@
 import client from '../database';
 
 export type Order = {
-    [x: string]: any;
-    id?: string;
     status: boolean;
     user_id: number;
 };
@@ -41,7 +39,6 @@ export class StoreOrder {
                 'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *;';
             const result = await con.query(sql, [
                 b.status,
-                b.product_id,
                 b.user_id,
             ]);
             const ordr = result.rows[0];

@@ -96,6 +96,11 @@ TOKEN_SECRET=secrettoken
 * [![dotenv][dotenv.shield]][dotenv-url]
 
 
+## Resources
+
+- Select most repeated value in a column : https://stackoverflow.com/a/12235631/
+
+
 <p align="right">(<a href="#readme-top">Back to Top</a>)</p>
 
 

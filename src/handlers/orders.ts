@@ -2,15 +2,15 @@ import express, { Request, Response } from 'express';
 import { Order, StoreOrder } from '../models/order';
 import { verifyToken } from '../middleware/auth';
 
-const order = new StoreOrder();
+const storeorder = new StoreOrder();
 
 const index = async (_req: Request, res: Response) => {
-    const orders = await order.index();
+    const orders = await storeorder.index();
     res.json(orders);
 };
 
 const show = async (req: Request, res: Response) => {
-    const Order = await order.show(req.params.id);
+    const Order = await storeorder.show(req.params.id);
     res.json(Order);
 };
 
@@ -21,7 +21,7 @@ const create = async (req: Request, res: Response) => {
     };
 
     try {
-        const newOrder = await order.create(ordr);
+        const newOrder = await storeorder.create(ordr);
         res.json(newOrder);
     } catch (err) {
         res.status(400);
@@ -30,12 +30,12 @@ const create = async (req: Request, res: Response) => {
 };
 
 const addProduct = async (req: Request, res: Response) => {
-    const order_id: string = req.params.id;
-    const product_id: string = req.params.prodId;
-    const quantity: number = parseInt(req.params.qty);
+    const order_id = req.body.id;
+    const product_id = req.body.prodId;
+    const quantity = parseInt(req.body.qty);
 
     try {
-        const addedProduct = await order.addProduct(
+        const addedProduct = await storeorder.addProduct(
             quantity,
             order_id,
             product_id
@@ -48,7 +48,7 @@ const addProduct = async (req: Request, res: Response) => {
 };
 
 const destroy = async (req: Request, res: Response) => {
-    const deleted = await order.delete(req.body.id);
+    const deleted = await storeorder.delete(req.body.id);
     res.json(deleted);
 };
 

@@ -55,7 +55,7 @@ const SpecificTopSoldProducts = (req, res) => __awaiter(void 0, void 0, void 0, 
     res.json(products);
 });
 const dashboard_routes = (app) => {
-    app.get('/products/top/', TopSoldProducts);
-    app.get('/products/top/:n', SpecificTopSoldProducts);
+    app.get('/top-products', TopSoldProducts);
+    app.get('/top-products/:n', SpecificTopSoldProducts);
 };
 exports.default = dashboard_routes;

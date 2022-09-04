@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const verifyToken = (req: Request, res: Response, next) => {
+export const verifyToken = (req: Request, res: Response, next: Function): void => {
     try {
         const authHeader = req.headers.authorization;
         const token = authHeader ? authHeader.split(' ')[1] : '';
