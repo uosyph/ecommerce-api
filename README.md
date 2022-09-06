@@ -60,7 +60,17 @@ Run **ESLint**
 
 ## ENDPOINT
 
+### Users Route
 
+`http://localhost:3000/users`
+
+### Products Route
+
+`http://localhost:3000/products`
+
+### Orders Route
+
+`http://localhost:3000/orders`
 
 
 ## .env file example
