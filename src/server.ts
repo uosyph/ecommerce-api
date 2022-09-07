@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import product_routes from './handlers/products';
+import product_route from './handlers/products';
 import user_route from './handlers/users';
-import order_routes from './handlers/orders';
+import order_route from './handlers/orders';
 import dashboard_routes from './services/dashboard';
 
 const app: express.Application = express();
@@ -21,8 +21,8 @@ app.get('/', function (req: Request, res: Response) {
 });
 
 app.use('/users', user_route);
-app.use('/products', product_routes);
-app.use('/orders', order_routes);
+app.use('/products', product_route);
+app.use('/orders', order_route);
 dashboard_routes(app);
 
 app.listen(PORT, () => {

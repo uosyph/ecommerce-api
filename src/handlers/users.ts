@@ -64,10 +64,13 @@ user_route.post('/auth', async (req: Request, res: Response) => {
     }
 });
 
-user_route.delete('/', async (req: Request, res: Response) => {
-    const deleted = await storeuser.delete(req.body.id);
-    res.json(deleted);
-
+user_route.delete('/', verifyToken, async (req: Request, res: Response) => {
+    try {
+        const deleted = await storeuser.delete(req.body.id);
+        res.json(deleted);
+    } catch (err) {
+        res.status(400).json(err);
+    }
 });
 
 export default user_route;

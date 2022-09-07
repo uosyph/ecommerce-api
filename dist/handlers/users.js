@@ -76,8 +76,13 @@ user_route.post('/auth', (req, res) => __awaiter(void 0, void 0, void 0, functio
         console.log(err);
     }
 }));
-user_route.delete('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield storeuser.delete(req.body.id);
-    res.json(deleted);
+user_route.delete('/', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const deleted = yield storeuser.delete(req.body.id);
+        res.json(deleted);
+    }
+    catch (err) {
+        res.status(400).json(err);
+    }
 }));
 exports.default = user_route;

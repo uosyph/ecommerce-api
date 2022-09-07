@@ -1,6 +1,7 @@
 import client from '../database';
 
 export type Product = {
+    id?: number;
     name: string;
     price: number;
     category: string;
@@ -12,6 +13,7 @@ export class StoreProduct {
             const con = await client.connect();
             const sql = 'SELECT * FROM products;';
             const result = await con.query(sql);
+
             con.release();
             return result.rows;
         } catch (err) {
@@ -26,26 +28,24 @@ export class StoreProduct {
             const result = await con.query(sql, [id]);
 
             con.release();
-
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not find product id: ${id}...  ${err}`);
+            throw new Error(`Could not find product ${id}...  ${err}`);
         }
     }
 
-    async create(b: Product): Promise<Product> {
+    async create(p: Product): Promise<Product> {
         try {
             const con = await client.connect();
             const sql =
-                'INSERT INTO products (name, type, exp) VALUES($1, $2, $3) RETURNING *';
-            const result = await con.query(sql, [b.name, b.category, b.price]);
+                'INSERT INTO products (name, category, price) VALUES($1, $2, $3) RETURNING *';
+            const result = await con.query(sql, [p.name, p.category, p.price]);
+
             const prod = result.rows[0];
-
             con.release();
-
             return prod;
         } catch (err) {
-            throw new Error(`Could not add new product: ${name}...  ${err}`);
+            throw new Error(`Could not create product: ${p.name}...  ${err}`);
         }
     }
 
@@ -57,12 +57,9 @@ export class StoreProduct {
             const prod = result.rows[0];
 
             con.release();
-
             return prod;
         } catch (err) {
-            throw new Error(
-                `Could not delete product id: ${id}... Error: ${err}`
-            );
+            throw new Error(`Could not delete product ${id}...  ${err}`);
         }
     }
 }

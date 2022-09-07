@@ -39,22 +39,22 @@ class StoreProduct {
                 return result.rows[0];
             }
             catch (err) {
-                throw new Error(`Could not find product id: ${id}...  ${err}`);
+                throw new Error(`Could not find product ${id}...  ${err}`);
             }
         });
     }
-    create(b) {
+    create(p) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const con = yield database_1.default.connect();
-                const sql = 'INSERT INTO products (name, type, exp) VALUES($1, $2, $3) RETURNING *';
-                const result = yield con.query(sql, [b.name, b.category, b.price]);
+                const sql = 'INSERT INTO products (name, category, price) VALUES($1, $2, $3) RETURNING *';
+                const result = yield con.query(sql, [p.name, p.category, p.price]);
                 const prod = result.rows[0];
                 con.release();
                 return prod;
             }
             catch (err) {
-                throw new Error(`Could not add new product: ${name}...  ${err}`);
+                throw new Error(`Could not create product: ${p.name}...  ${err}`);
             }
         });
     }
@@ -69,7 +69,7 @@ class StoreProduct {
                 return prod;
             }
             catch (err) {
-                throw new Error(`Could not delete product id: ${id}... Error: ${err}`);
+                throw new Error(`Could not delete product ${id}...  ${err}`);
             }
         });
     }

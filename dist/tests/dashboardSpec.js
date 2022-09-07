@@ -12,18 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dashboard_1 = require("../services/dashboard");
 const dashboard = new dashboard_1.DashboardQueries();
 describe('Dashboard Services', () => {
-    it('Should have TopSoldProducts Method', () => {
-        expect(dashboard.TopSoldProducts).toBeDefined();
+    it('All methods should be defined', () => {
+        expect(dashboard.topSoldProds).toBeDefined();
+        expect(dashboard.specificTopSoldProds).toBeDefined();
+        expect(dashboard.filterByCategory).toBeDefined();
     });
-    it('Should have SpecificTopSoldProducts Method', () => {
-        expect(dashboard.SpecificTopSoldProducts).toBeDefined();
-    });
-    it('TopSoldProducts method should return a list of top sold products', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield dashboard.TopSoldProducts();
-        expect(result).toEqual([]);
+    it('topSoldProducts method should return a list of top sold products', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield dashboard.topSoldProds();
+        expect(result.length > 0);
     }));
-    it('SpecificTopSoldProducts method should return a list of top 5 sold products', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield dashboard.SpecificTopSoldProducts(5);
-        expect(result).toEqual([]);
+    it('specificTopSoldProducts method should return a list of top 5 sold products', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield dashboard.specificTopSoldProds(5);
+        expect(result.length > 0);
+    }));
+    it('filterByCategory method should filter products by category', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield dashboard.filterByCategory('general');
+        expect(result.length > 0);
     }));
 });

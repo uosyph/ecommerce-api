@@ -64,7 +64,6 @@ export class StoreUser {
             const usr = result.rows[0];
 
             con.release();
-
             return usr;
         } catch (err) {
             throw new Error(`Could not delete User id: ${id}... Error: ${err}`);

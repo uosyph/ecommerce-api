@@ -8,41 +8,55 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
 const product_1 = require("../models/product");
 const auth_1 = require("../middleware/auth");
+const product_route = express_1.default.Router();
 const storeproduct = new product_1.StoreProduct();
-const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const products = yield storeproduct.index();
-    res.json(products);
-});
-const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Product = yield storeproduct.show(req.body.id);
-    res.json(Product);
-});
-const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+product_route.get('/', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const products = yield storeproduct.index();
+        res.json(products);
+    }
+    catch (err) {
+        res.status(400).json(err);
+    }
+}));
+product_route.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const Product = yield storeproduct.show(req.body.id);
+        res.json(Product);
+    }
+    catch (err) {
+        res.status(400).json(err);
+    }
+}));
+product_route.post('/', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const product = {
             name: req.body.name,
             price: req.body.price,
-            category: req.body.category,
+            category: (_a = req.body.category) !== null && _a !== void 0 ? _a : 'uncategorized',
         };
         const newProduct = yield storeproduct.create(product);
         res.json(newProduct);
     }
     catch (err) {
-        res.status(400);
-        res.json(err);
+        res.status(400).json(err);
     }
-});
-const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield storeproduct.delete(req.body.id);
-    res.json(deleted);
-});
-const product_routes = (app) => {
-    app.get('/products', index);
-    app.get('/products/:id', show);
-    app.post('/products', auth_1.verifyToken, create);
-    app.delete('/products', auth_1.verifyToken, destroy);
-};
-exports.default = product_routes;
+}));
+product_route.delete('/', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const deleted = yield storeproduct.delete(req.body.id);
+        res.json(deleted);
+    }
+    catch (err) {
+        res.status(400).json(err);
+    }
+}));
+exports.default = product_route;

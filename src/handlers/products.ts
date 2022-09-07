@@ -2,44 +2,48 @@ import express, { Request, Response } from 'express';
 import { Product, StoreProduct } from '../models/product';
 import { verifyToken } from '../middleware/auth';
 
+const product_route = express.Router();
 const storeproduct = new StoreProduct();
 
-const index = async (_req: Request, res: Response) => {
-    const products = await storeproduct.index();
-    res.json(products);
-};
+product_route.get('/', async (_req: Request, res: Response) => {
+    try {
+        const products = await storeproduct.index();
+        res.json(products);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
 
-const show = async (req: Request, res: Response) => {
-    const Product = await storeproduct.show(req.body.id);
-    res.json(Product);
-};
+product_route.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const Product = await storeproduct.show(req.body.id);
+        res.json(Product);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
 
-const create = async (req: Request, res: Response) => {
+product_route.post('/', verifyToken, async (req: Request, res: Response) => {
     try {
         const product: Product = {
             name: req.body.name,
             price: req.body.price,
-            category: req.body.category,
+            category: req.body.category ?? 'uncategorized',
         };
-
         const newProduct = await storeproduct.create(product);
         res.json(newProduct);
     } catch (err) {
-        res.status(400);
-        res.json(err);
+        res.status(400).json(err);
     }
-};
+});
 
-const destroy = async (req: Request, res: Response) => {
-    const deleted = await storeproduct.delete(req.body.id);
-    res.json(deleted);
-};
+product_route.delete('/', verifyToken, async (req: Request, res: Response) => {
+    try {
+        const deleted = await storeproduct.delete(req.body.id);
+        res.json(deleted);
+    } catch (err) {
+        res.status(400).json(err);
+    }
+});
 
-const product_routes = (app: express.Application) => {
-    app.get('/products', index);
-    app.get('/products/:id', show);
-    app.post('/products', verifyToken, create);
-    app.delete('/products', verifyToken, destroy);
-};
-
-export default product_routes;
+export default product_route;
