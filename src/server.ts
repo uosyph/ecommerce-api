@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import product_routes from './handlers/products';
-import user_routes from './handlers/users';
+import user_route from './handlers/users';
 import order_routes from './handlers/orders';
 import dashboard_routes from './services/dashboard';
 
@@ -20,9 +20,9 @@ app.get('/', function (req: Request, res: Response) {
     res.send('Main Route');
 });
 
-product_routes(app);
-user_routes(app);
-order_routes(app);
+app.use('/users', user_route);
+app.use('/products', product_routes);
+app.use('/orders', order_routes);
 dashboard_routes(app);
 
 app.listen(PORT, () => {

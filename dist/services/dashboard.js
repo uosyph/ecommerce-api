@@ -51,7 +51,7 @@ const TopSoldProducts = (_req, res) => __awaiter(void 0, void 0, void 0, functio
     res.json(products);
 });
 const SpecificTopSoldProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const products = yield dashboard.SpecificTopSoldProducts(req.body.num);
+    const products = yield dashboard.SpecificTopSoldProducts(req.body.prods);
     res.json(products);
 });
 const dashboard_routes = (app) => {

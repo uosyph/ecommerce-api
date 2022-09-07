@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import client from '../database';
 
 export type User = {
+    id?: number;
     username: string;
     password: string;
 };
@@ -15,6 +16,7 @@ export class StoreUser {
             const con = await client.connect();
             const sql = 'SELECT * FROM users;';
             const result = await con.query(sql);
+
             con.release();
             return result.rows;
         } catch (err) {
@@ -22,17 +24,16 @@ export class StoreUser {
         }
     }
 
-    async show(id: string): Promise<User> {
+    async show(id: string): Promise<User | null> {
         try {
             const con = await client.connect();
             const sql = 'SELECT * FROM users WHERE id=($1);';
             const result = await con.query(sql, [id]);
 
             con.release();
-
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not find User id: ${id}...  ${err}`);
+            throw new Error(`Could not find User ${id}: ${err}`);
         }
     }
 
@@ -47,16 +48,9 @@ export class StoreUser {
                 parseInt(salt)
             );
 
-            const result = await con.query(sql, [
-                u.username,
-                hashedPW,
-            ]);
-
-            const usr = result.rows[0];
-
+            const result = await con.query(sql, [u.username, hashedPW]);
             con.release();
-
-            return usr;
+            return result.rows[0];
         } catch (err) {
             throw new Error(`Could not add new User ${u.username}...  ${err}`);
         }
@@ -82,7 +76,7 @@ export class StoreUser {
         const sql = 'SELECT password FROM users WHERE username=($1)';
         const result = await con.query(sql, [username]);
 
-        if (result.rows.length) {
+        if (result.rows.length > 0) {
             const user = result.rows[0];
 
             if (bcrypt.compareSync(password + pepper, user.password)) {

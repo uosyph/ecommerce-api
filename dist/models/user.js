@@ -42,7 +42,7 @@ class StoreUser {
                 return result.rows[0];
             }
             catch (err) {
-                throw new Error(`Could not find User id: ${id}...  ${err}`);
+                throw new Error(`Could not find User ${id}: ${err}`);
             }
         });
     }
@@ -50,17 +50,11 @@ class StoreUser {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const con = yield database_1.default.connect();
-                const sql = 'INSERT INTO users (username, firstName, secondName, password) VALUES($1, $2, $3, $4) RETURNING *;';
+                const sql = 'INSERT INTO users (username, password) VALUES($1, $2) RETURNING *;';
                 const hashedPW = bcrypt_1.default.hashSync(u.password + pepper, parseInt(salt));
-                const result = yield con.query(sql, [
-                    u.username,
-                    u.firstName,
-                    u.secondName,
-                    hashedPW,
-                ]);
-                const usr = result.rows[0];
+                const result = yield con.query(sql, [u.username, hashedPW]);
                 con.release();
-                return usr;
+                return result.rows[0];
             }
             catch (err) {
                 throw new Error(`Could not add new User ${u.username}...  ${err}`);
@@ -87,7 +81,7 @@ class StoreUser {
             const con = yield database_1.default.connect();
             const sql = 'SELECT password FROM users WHERE username=($1)';
             const result = yield con.query(sql, [username]);
-            if (result.rows.length) {
+            if (result.rows.length > 0) {
                 const user = result.rows[0];
                 if (bcrypt_1.default.compareSync(password + pepper, user.password)) {
                     return user;

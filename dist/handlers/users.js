@@ -12,85 +12,72 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_1 = require("../models/user");
 const auth_1 = require("../middleware/auth");
-const user = new user_1.StoreUser();
-const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield user.index();
-    res.json(users);
-});
-const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const User = yield user.show(req.body.id);
-    res.json(User);
-});
-const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = {
-        username: req.body.username,
-        firstName: req.body.firstName,
-        secondName: req.body.secondName,
-        password: req.body.password,
-        id: '',
-    };
+const user_route = express_1.default.Router();
+const storeuser = new user_1.StoreUser();
+const pepper = process.env.TOKEN_SECRET;
+user_route.get('/', auth_1.verifyToken, (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        jsonwebtoken_1.default.verify(req.body.token, process.env.SECRET_TOKEN);
+        const users = yield storeuser.index();
+        res.json(users);
     }
     catch (err) {
-        res.status(401);
-        res.json('Invalid Token ${err}');
-        return;
+        res.status(400);
+        res.json(err);
     }
+}));
+user_route.get('/:id', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newUser = yield user.create(user);
-        const token = jsonwebtoken_1.default.sign({ user: newUser }, process.env.SECRET_TOKEN);
+        const user = yield storeuser.show(req.body.id);
+        res.json(user);
+    }
+    catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+}));
+user_route.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = {
+        username: req.body.username,
+        password: req.body.password,
+    };
+    try {
+        const newUser = yield storeuser.create(user);
+        const token = jsonwebtoken_1.default.sign({ user: newUser }, pepper);
+        res.json(token);
+        console.log(token);
+    }
+    catch (err) {
+        res.status(400);
+        res.json(err);
+        console.log(err);
+    }
+}));
+user_route.post('/auth', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = {
+        username: req.body.username,
+        password: req.body.password,
+    };
+    try {
+        const usr = yield storeuser.auth(user.username, user.password);
+        if (!usr) {
+            res.status(401);
+            return;
+        }
+        const token = jsonwebtoken_1.default.sign({ user: usr }, pepper);
         res.json(token);
     }
     catch (err) {
-        res.status(400);
+        res.status(401);
         res.json(err);
+        console.log(err);
     }
-});
-const auth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = {
-            username: req.body.username,
-            password: req.body.password,
-            id: '',
-            firstName: '',
-            secondName: '',
-        };
-    }
-    catch (err) {
-        res.status(400);
-        res.json(err);
-    }
-});
-const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = {
-        id: req.params.id,
-        username: req.body.username,
-        password: req.body.password,
-        firstName: '',
-        secondName: '',
-    };
-    try {
-        const updated = yield user.create(user);
-        res.json(updated);
-    }
-    catch (err) {
-        res.status(400);
-        res.json('${err}' + user);
-    }
-});
-const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield user.delete(req.body.id);
+}));
+user_route.delete('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const deleted = yield storeuser.delete(req.body.id);
     res.json(deleted);
-});
-const user_routes = (app) => {
-    app.get('/users', index);
-    app.get('/users/:id', show);
-    app.post('/users', create);
-    app.delete('/users', auth_1.verifyToken, destroy);
-    app.post('/users/auth', auth);
-};
-exports.default = user_routes;
+}));
+exports.default = user_route;

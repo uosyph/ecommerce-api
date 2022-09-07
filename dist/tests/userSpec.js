@@ -10,22 +10,52 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
-const user = new user_1.StoreUser();
-describe('User Module', () => {
+const storeuser = new user_1.StoreUser();
+fdescribe('User Module', () => {
     it('should have an index method', () => {
-        expect(user.index).toBeDefined();
+        expect(storeuser.index).toBeDefined();
     });
     it('should have a show method', () => {
-        expect(user.show).toBeDefined();
+        expect(storeuser.show).toBeDefined();
     });
     it('should have a create method', () => {
-        expect(user.create).toBeDefined();
+        expect(storeuser.create).toBeDefined();
     });
     it('should have a delete method', () => {
-        expect(user.delete).toBeDefined();
+        expect(storeuser.delete).toBeDefined();
     });
-    it('Index method should return a list of Users', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield user.index();
+    it('should have an authorization method', () => {
+        expect(storeuser.auth).toBeDefined();
+    });
+    it('create method should add a user', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield storeuser.create({
+            username: 'testuser',
+            password: 'password123',
+        });
+        expect(result).toEqual({
+            username: 'testuser',
+            password: 'password123',
+        });
+    }));
+    it('index method should return a list of users', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield storeuser.index();
+        expect(result).toEqual([
+            {
+                username: 'testuser',
+                password: 'password123',
+            },
+        ]);
+    }));
+    it('show method should return the correct user', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield storeuser.show('17');
+        expect(result).toEqual({
+            username: 'testuser',
+            password: 'password123',
+        });
+    }));
+    it('delete method should remove the user', () => __awaiter(void 0, void 0, void 0, function* () {
+        storeuser.delete('17');
+        const result = yield storeuser.index();
         expect(result).toEqual([]);
     }));
 });

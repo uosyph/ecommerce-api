@@ -11,13 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = require("../models/order");
 const auth_1 = require("../middleware/auth");
-const order = new order_1.StoreOrder();
+const storeorder = new order_1.StoreOrder();
 const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const orders = yield order.index();
+    const orders = yield storeorder.index();
     res.json(orders);
 });
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Order = yield order.show(req.params.id);
+    const Order = yield storeorder.show(req.params.id);
     res.json(Order);
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,7 +26,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         status: true,
     };
     try {
-        const newOrder = yield order.create(ordr);
+        const newOrder = yield storeorder.create(ordr);
         res.json(newOrder);
     }
     catch (err) {
@@ -35,11 +35,11 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const order_id = req.params.id;
-    const product_id = req.params.prodId;
-    const quantity = parseInt(req.params.qty);
+    const order_id = req.body.id;
+    const product_id = req.body.prodId;
+    const quantity = parseInt(req.body.qty);
     try {
-        const addedProduct = yield order.addProduct(quantity, order_id, product_id);
+        const addedProduct = yield storeorder.addProduct(quantity, order_id, product_id);
         res.json(addedProduct);
     }
     catch (err) {
@@ -48,7 +48,7 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield order.delete(req.body.id);
+    const deleted = yield storeorder.delete(req.body.id);
     res.json(deleted);
 });
 const order_routes = (app) => {

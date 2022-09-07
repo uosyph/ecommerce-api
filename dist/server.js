@@ -20,9 +20,9 @@ app.use(body_parser_1.default.json());
 app.get('/', function (req, res) {
     res.send('Main Route');
 });
-(0, products_1.default)(app);
-(0, users_1.default)(app);
-(0, orders_1.default)(app);
+app.use('/users', users_1.default);
+app.use('/products', products_1.default);
+app.use('/orders', orders_1.default);
 (0, dashboard_1.default)(app);
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);

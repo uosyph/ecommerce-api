@@ -10,22 +10,49 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const order_1 = require("../models/order");
-const order = new order_1.StoreOrder();
+const storeorder = new order_1.StoreOrder();
 describe('Order Module', () => {
     it('should have an index method', () => {
-        expect(order.index).toBeDefined();
+        expect(storeorder.index).toBeDefined();
     });
     it('should have a show method', () => {
-        expect(order.show).toBeDefined();
+        expect(storeorder.show).toBeDefined();
     });
     it('should have a create method', () => {
-        expect(order.create).toBeDefined();
+        expect(storeorder.create).toBeDefined();
     });
     it('should have a delete method', () => {
-        expect(order.delete).toBeDefined();
+        expect(storeorder.delete).toBeDefined();
     });
-    it('Index method should return a list of Orders', () => __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield order.index();
+    it('create method should add an order', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield storeorder.create({
+            status: true,
+            user_id: 1,
+        });
+        expect(result).toEqual({
+            status: true,
+            user_id: 1,
+        });
+    }));
+    it('index method should return a list of orders', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield storeorder.index();
+        expect(result).toEqual([
+            {
+                status: true,
+                user_id: 1,
+            },
+        ]);
+    }));
+    it('show method should return the correct order', () => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield storeorder.show('1');
+        expect(result).toEqual({
+            status: true,
+            user_id: 1,
+        });
+    }));
+    it('delete method should remove the order', () => __awaiter(void 0, void 0, void 0, function* () {
+        storeorder.delete('1');
+        const result = yield storeorder.index();
         expect(result).toEqual([]);
     }));
 });

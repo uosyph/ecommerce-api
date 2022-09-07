@@ -39,7 +39,7 @@ const TopSoldProducts = async (_req: Request, res: Response) => {
 };
 
 const SpecificTopSoldProducts = async (req: Request, res: Response) => {
-    const products = await dashboard.SpecificTopSoldProducts(req.body.num);
+    const products = await dashboard.SpecificTopSoldProducts(req.body.prods);
     res.json(products);
 };
 

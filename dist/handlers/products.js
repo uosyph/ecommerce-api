@@ -11,13 +11,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = require("../models/product");
 const auth_1 = require("../middleware/auth");
-const product = new product_1.StoreProduct();
+const storeproduct = new product_1.StoreProduct();
 const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const products = yield product.index();
+    const products = yield storeproduct.index();
     res.json(products);
 });
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Product = yield product.show(req.body.id);
+    const Product = yield storeproduct.show(req.body.id);
     res.json(Product);
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,9 +26,8 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name: req.body.name,
             price: req.body.price,
             category: req.body.category,
-            id: '',
         };
-        const newProduct = yield product.create(product);
+        const newProduct = yield storeproduct.create(product);
         res.json(newProduct);
     }
     catch (err) {
@@ -37,7 +36,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield product.delete(req.body.id);
+    const deleted = yield storeproduct.delete(req.body.id);
     res.json(deleted);
 });
 const product_routes = (app) => {

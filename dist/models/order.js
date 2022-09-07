@@ -48,11 +48,7 @@ class StoreOrder {
             try {
                 const con = yield database_1.default.connect();
                 const sql = 'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *;';
-                const result = yield con.query(sql, [
-                    b.status,
-                    b.product_id,
-                    b.user_id,
-                ]);
+                const result = yield con.query(sql, [b.status, b.user_id]);
                 const ordr = result.rows[0];
                 con.release();
                 return ordr;

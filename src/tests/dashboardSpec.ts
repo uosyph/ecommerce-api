@@ -1,6 +1,6 @@
-import { DashboardQueries } from "../services/dashboard";
+import { DashboardQueries } from '../services/dashboard';
 
-const dashboard = new DashboardQueries;
+const dashboard = new DashboardQueries();
 
 describe('Dashboard Services', () => {
     it('Should have TopSoldProducts Method', () => {

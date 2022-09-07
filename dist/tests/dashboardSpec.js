@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dashboard_1 = require("../services/dashboard");
-const dashboard = new dashboard_1.DashboardQueries;
+const dashboard = new dashboard_1.DashboardQueries();
 describe('Dashboard Services', () => {
     it('Should have TopSoldProducts Method', () => {
         expect(dashboard.TopSoldProducts).toBeDefined();
