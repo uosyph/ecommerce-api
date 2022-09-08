@@ -5,6 +5,8 @@ export type User = {
     id?: number;
     username: string;
     password: string;
+    fisrtname?: string;
+    secondname?: string;
 };
 
 const pepper: string = process.env.BYCRT_PASSWORD as string;

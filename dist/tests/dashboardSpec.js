@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dashboard_1 = require("../services/dashboard");
+const dashboard_1 = require("../services/models/dashboard");
 const dashboard = new dashboard_1.DashboardQueries();
 describe('Dashboard Services', () => {
     it('All methods should be defined', () => {

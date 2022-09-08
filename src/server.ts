@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import product_route from './handlers/products';
 import user_route from './handlers/users';
 import order_route from './handlers/orders';
-import dashboard_routes from './services/dashboard';
+import dashboard_routes from './services/handlers/dashboard';
 
 const app: express.Application = express();
 const PORT = '3000';

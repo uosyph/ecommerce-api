@@ -8,54 +8,60 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
 const order_1 = require("../models/order");
 const auth_1 = require("../middleware/auth");
+const order_route = express_1.default.Router();
 const storeorder = new order_1.StoreOrder();
-const index = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const orders = yield storeorder.index();
-    res.json(orders);
-});
-const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Order = yield storeorder.show(req.params.id);
-    res.json(Order);
-});
-const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const ordr = {
-        user_id: req.body.user_id,
-        status: true,
-    };
+order_route.get('/:id', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const newOrder = yield storeorder.create(ordr);
+        const Order = yield storeorder.show(req.body.id);
+        res.json(Order);
+    }
+    catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+}));
+order_route.post('/', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const order = {
+            user_id: req.body.user_id,
+            status: true,
+            product_id: req.body.product_id,
+            quantity: req.body.quantity,
+        };
+        const newOrder = yield storeorder.create(order);
         res.json(newOrder);
     }
     catch (err) {
         res.status(400);
         res.json(err);
+        console.log(err);
     }
-});
-const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const order_id = req.body.id;
-    const product_id = req.body.prodId;
-    const quantity = parseInt(req.body.qty);
+}));
+order_route.delete('/', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const addedProduct = yield storeorder.addProduct(quantity, order_id, product_id);
-        res.json(addedProduct);
+        const deleted = yield storeorder.delete(req.body.id);
+        res.json(deleted);
     }
     catch (err) {
         res.status(400);
         res.json(err);
     }
-});
-const destroy = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const deleted = yield storeorder.delete(req.body.id);
-    res.json(deleted);
-});
-const order_routes = (app) => {
-    app.get('/orders', auth_1.verifyToken, index);
-    app.get('/orders/:id', auth_1.verifyToken, show);
-    app.post('/orders', auth_1.verifyToken, create);
-    app.delete('/orders', auth_1.verifyToken, destroy);
-    app.put('/orders/:id/products', addProduct);
-};
-exports.default = order_routes;
+}));
+order_route.post('/done', auth_1.verifyToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const updated = yield storeorder.update(req.body.id);
+        res.json(updated);
+    }
+    catch (err) {
+        res.status(400);
+        res.json(err);
+    }
+}));
+exports.default = order_route;

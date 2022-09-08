@@ -1,93 +1,72 @@
 import client from '../database';
 
 export type Order = {
+    id?: number;
     status: boolean;
     user_id: number;
+    product_id: number[];
+    quantity: number[];
 };
 
 export class StoreOrder {
-    async index(): Promise<Order[]> {
-        try {
-            const con = await client.connect();
-            const sql = 'SELECT * FROM orders;';
-            const result = await con.query(sql);
-            con.release();
-            return result.rows;
-        } catch (err) {
-            throw new Error(`Could not get orders...  ${err}`);
-        }
-    }
-
-    async show(id: string): Promise<Order> {
+    async show(id: string): Promise<Order | null> {
         try {
             const con = await client.connect();
             const sql = 'SELECT * FROM orders WHERE id=($1);';
             const result = await con.query(sql, [id]);
 
             con.release();
-
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not find Order id: ${id}...  ${err}`);
+            throw new Error(`Could not find Order ${id}...  ${err}`);
         }
     }
 
-    async create(b: Order): Promise<Order> {
+    async create(o: Order): Promise<Order> {
         try {
             const con = await client.connect();
             const sql =
                 'INSERT INTO orders (status, user_id) VALUES($1, $2) RETURNING *;';
-            const result = await con.query(sql, [b.status, b.user_id]);
+            const result = await con.query(sql, [o.status, o.user_id]);
             const ordr = result.rows[0];
 
-            con.release();
-
-            return ordr;
-        } catch (err) {
-            throw new Error(`Could not add new Order: ${name}...  ${err}`);
-        }
-    }
-
-    async addProduct(
-        quantity: number,
-        order_id: string,
-        product_id: string
-    ): Promise<Order> {
-        try {
-            const con = await client.connect();
-            const sql =
-                'INSER INTO orders_products (quantity, order_id, product_id) VALUES ($1, $2, $3) RETURNING *';
-            const result = await con.query(sql, [
-                quantity,
-                order_id,
-                product_id,
-            ]);
-            const order = result.rows[0];
+            const ordered = 'INSERT INTO order_products (order_id, product_id, quantity) VALUES ($1, $2, $3) RETURNING *;';
+            const odResult = await con.query(ordered, [ordr.id, o.product_id, o.quantity])
+            const ordrd = odResult.rows[0];
 
             con.release();
-
-            return order;
+            return ordrd;
         } catch (err) {
-            throw new Error(
-                'Could not add Product: ${product_id} to Order {order_id}...  ${err}'
-            );
+            throw new Error(`Could not create new order...  ${err}`);
         }
     }
 
     async delete(id: string): Promise<Order> {
         try {
             const con = await client.connect();
-            const sql = 'DELETE FROM orders WHERE id=($1);';
+            const sql =
+                'DELETE FROM orders WHERE id=($1);';
             const result = await con.query(sql, [id]);
             const ordr = result.rows[0];
 
             con.release();
-
             return ordr;
         } catch (err) {
-            throw new Error(
-                `Could not delete Order id: ${id}... Error: ${err}`
-            );
+            throw new Error(`Could not delete Order ${id}... ${err}`);
+        }
+    }
+
+    async update(id: string): Promise<Order> {
+        try {
+            const con = await client.connect();
+            const sql = 'UPDATE orders SET status=false WHERE id=($1)';
+            const result = await con.query(sql, [id]);
+            const ordr = result.rows[0];
+
+            con.release();
+            return ordr;
+        } catch (err) {
+            throw new Error(`Could not update order ${id}'s status... ${err}`);
         }
     }
 }

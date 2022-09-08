@@ -3,55 +3,37 @@ import { StoreOrder } from '../models/order';
 const storeorder = new StoreOrder();
 
 describe('Order Module', () => {
-    it('should have an index method', () => {
-        expect(storeorder.index).toBeDefined();
-    });
-
-    it('should have a show method', () => {
+    it('All methods should be defined', () => {
         expect(storeorder.show).toBeDefined();
-    });
-
-    it('should have a create method', () => {
         expect(storeorder.create).toBeDefined();
-    });
-
-    it('should have a delete method', () => {
         expect(storeorder.delete).toBeDefined();
+        expect(storeorder.update).toBeDefined();
     });
 
-    it('create method should add an order', async () => {
+    it('create method should create a new order', async () => {
         const result = await storeorder.create({
             status: true,
-            user_id: 1,
+            user_id: 24,
+            product_id: [1],
+            quantity: [1]
         });
-        expect(result).toEqual({
-            status: true,
-            user_id: 1,
-        });
-    });
-
-    it('index method should return a list of orders', async () => {
-        const result = await storeorder.index();
-        expect(result).toEqual([
-            {
-                status: true,
-                user_id: 1,
-            },
-        ]);
+        expect(result).toBeDefined();
     });
 
     it('show method should return the correct order', async () => {
         const result = await storeorder.show('1');
-        expect(result).toEqual({
-            status: true,
-            user_id: 1,
-        });
+        expect(result?.id).toEqual(1);
+    });
+
+    it('update method should update order\'s status', async () => {
+        storeorder.update('1');
+        const result = await storeorder.show('1');
+        expect(result?.status).toEqual(true);
     });
 
     it('delete method should remove the order', async () => {
         storeorder.delete('1');
-        const result = await storeorder.index();
-
-        expect(result).toEqual([]);
+        const result = await storeorder.show('1');
+        expect(result).toBeFalsy();
     });
 });

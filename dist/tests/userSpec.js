@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_1 = require("../models/user");
 const storeuser = new user_1.StoreUser();
-fdescribe('User Module', () => {
+describe('User Module', () => {
     it('All methods should be defined', () => {
         expect(storeuser.index).toBeDefined();
         expect(storeuser.show).toBeDefined();

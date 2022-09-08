@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = require("../models/product");
 const storeproduct = new product_1.StoreProduct();
-fdescribe('Product Module', () => {
+describe('Product Module', () => {
     it('All methods should be defined', () => {
         expect(storeproduct.index).toBeDefined();
         expect(storeproduct.show).toBeDefined();
@@ -32,7 +32,7 @@ fdescribe('Product Module', () => {
     }));
     it('show method should return the correct product', () => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield storeproduct.show('1');
-        expect(result).toBeDefined;
+        expect(result).toBeUndefined();
     }));
     it('delete method should remove the product', () => __awaiter(void 0, void 0, void 0, function* () {
         storeproduct.delete('1');

@@ -26,7 +26,7 @@ describe('Product Module', () => {
 
     it('show method should return the correct product', async () => {
         const result = await storeproduct.show('1');
-        expect(result).toBeDefined;
+        expect(result).toBeUndefined();
     });
 
     it('delete method should remove the product', async () => {
