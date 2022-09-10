@@ -72,6 +72,14 @@ Run **ESLint**
 
 `http://localhost:3000/orders`
 
+### Most Sold Products
+
+`http://localhost:3000/top-products`
+
+### Filter Products By Category
+
+`http://localhost:3000/filter-by-category`
+
 
 ## .env file example
 

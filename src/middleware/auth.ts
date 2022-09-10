@@ -8,10 +8,12 @@ export const verifyToken = (req: Request, res: Response, next: Function) => {
     try {
         const authHeader = req.headers.authorization;
         const token = authHeader?.split(' ')[1];
+        // check if user provided token
         if (!token) {
             res.status(401).send('No Token!');
             return;
         }
+        // check if token is valid
         jwt.verify(token, pepper, (err, ok) => {
             const verified = ok as { user: User };
             if (err) res.status(400);
