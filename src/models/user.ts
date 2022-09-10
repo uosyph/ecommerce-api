@@ -22,7 +22,7 @@ export class StoreUser {
             con.release();
             return result.rows;
         } catch (err) {
-            throw new Error(`Could not get users...  ${err}`);
+            throw new Error(`Unable to Get a List of Users...  ${err}`);
         }
     }
 
@@ -35,7 +35,7 @@ export class StoreUser {
             con.release();
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not find User ${id}: ${err}`);
+            throw new Error(`Unable to Find User ${id}: ${err}`);
         }
     }
 
@@ -54,7 +54,9 @@ export class StoreUser {
             con.release();
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not add new User ${u.username}...  ${err}`);
+            throw new Error(
+                `Unable to Create a New User ${u.username}...  ${err}`
+            );
         }
     }
 
@@ -68,7 +70,7 @@ export class StoreUser {
             con.release();
             return usr;
         } catch (err) {
-            throw new Error(`Could not delete User id: ${id}... Error: ${err}`);
+            throw new Error(`Unable to Delete User ${id}... ${err}`);
         }
     }
 

@@ -17,7 +17,7 @@ export class StoreProduct {
             con.release();
             return result.rows;
         } catch (err) {
-            throw new Error(`Could not get products...  ${err}`);
+            throw new Error(`Unable to Get a List of Products...  ${err}`);
         }
     }
 
@@ -30,7 +30,7 @@ export class StoreProduct {
             con.release();
             return result.rows[0];
         } catch (err) {
-            throw new Error(`Could not find product ${id}...  ${err}`);
+            throw new Error(`Unable to Find Product ${id}...  ${err}`);
         }
     }
 
@@ -45,7 +45,7 @@ export class StoreProduct {
             con.release();
             return prod;
         } catch (err) {
-            throw new Error(`Could not create product: ${p.name}...  ${err}`);
+            throw new Error(`Unable to Create Product: ${p.name}...  ${err}`);
         }
     }
 
@@ -59,7 +59,7 @@ export class StoreProduct {
             con.release();
             return prod;
         } catch (err) {
-            throw new Error(`Could not delete product ${id}...  ${err}`);
+            throw new Error(`Unable to Delete Product ${id}...  ${err}`);
         }
     }
 }

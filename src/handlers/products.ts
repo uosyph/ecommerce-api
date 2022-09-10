@@ -5,6 +5,7 @@ import { verifyToken } from '../middleware/auth';
 const product_route = express.Router();
 const storeproduct = new StoreProduct();
 
+// index method route
 product_route.get('/', async (_req: Request, res: Response) => {
     try {
         const products = await storeproduct.index();
@@ -14,6 +15,7 @@ product_route.get('/', async (_req: Request, res: Response) => {
     }
 });
 
+// show method route
 product_route.get('/:id', async (req: Request, res: Response) => {
     try {
         const Product = await storeproduct.show(req.body.id);
@@ -23,6 +25,7 @@ product_route.get('/:id', async (req: Request, res: Response) => {
     }
 });
 
+// create method route
 product_route.post('/', verifyToken, async (req: Request, res: Response) => {
     try {
         const product: Product = {
@@ -37,6 +40,7 @@ product_route.post('/', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+// delete route
 product_route.delete('/', verifyToken, async (req: Request, res: Response) => {
     try {
         const deleted = await storeproduct.delete(req.body.id);

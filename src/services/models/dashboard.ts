@@ -11,7 +11,7 @@ class DashboardQueries {
             con.release();
             return result.rows;
         } catch (err) {
-            throw new Error(`Unable to get top products...  ${err}`);
+            throw new Error(`Unable to Get a List of Top Products...  ${err}`);
         }
     }
 
@@ -25,7 +25,7 @@ class DashboardQueries {
             con.release();
             return result.rows;
         } catch (err) {
-            throw new Error(`Unable to get top products...  ${err}`);
+            throw new Error(`Unable to Get a List of Top Products...  ${err}`);
         }
     }
 
@@ -37,7 +37,7 @@ class DashboardQueries {
             con.release();
             return result.rows;
         } catch (err) {
-            throw new Error(`Unable to list products by category...  ${err}`);
+            throw new Error(`Unable to Filter Products by Category...  ${err}`);
         }
     }
 }

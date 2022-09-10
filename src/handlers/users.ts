@@ -7,6 +7,7 @@ const user_route = express.Router();
 const storeuser = new StoreUser();
 const pepper: string = process.env.TOKEN_SECRET as string;
 
+// index method route
 user_route.get('/', verifyToken, async (_req: Request, res: Response) => {
     try {
         const users = await storeuser.index();
@@ -17,6 +18,7 @@ user_route.get('/', verifyToken, async (_req: Request, res: Response) => {
     }
 });
 
+// show method route
 user_route.get('/:id', verifyToken, async (req: Request, res: Response) => {
     try {
         const user = await storeuser.show(req.body.id);
@@ -27,6 +29,7 @@ user_route.get('/:id', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+// create method route
 user_route.post('/', async (req: Request, res: Response) => {
     const user: User = {
         username: req.body.username,
@@ -44,6 +47,7 @@ user_route.post('/', async (req: Request, res: Response) => {
     }
 });
 
+// authorization route
 user_route.post('/auth', async (req: Request, res: Response) => {
     const user: User = {
         username: req.body.username,
@@ -64,6 +68,7 @@ user_route.post('/auth', async (req: Request, res: Response) => {
     }
 });
 
+// delete route
 user_route.delete('/', verifyToken, async (req: Request, res: Response) => {
     try {
         const deleted = await storeuser.delete(req.body.id);

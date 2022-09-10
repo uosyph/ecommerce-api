@@ -5,6 +5,7 @@ import { verifyToken } from '../middleware/auth';
 const order_route = express.Router();
 const storeorder = new StoreOrder();
 
+// show method route
 order_route.get('/:id', verifyToken, async (req: Request, res: Response) => {
     try {
         const Order = await storeorder.show(req.body.id);
@@ -15,6 +16,7 @@ order_route.get('/:id', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+// create method route
 order_route.post('/', verifyToken, async (req: Request, res: Response) => {
     try {
         const order: Order = {
@@ -32,6 +34,7 @@ order_route.post('/', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+// delete route
 order_route.delete('/', verifyToken, async (req: Request, res: Response) => {
     try {
         const deleted = await storeorder.delete(req.body.id);
@@ -42,6 +45,7 @@ order_route.delete('/', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+// update method route
 order_route.post('/done', verifyToken, async (req: Request, res: Response) => {
     try {
         const updated = await storeorder.update(req.body.id);

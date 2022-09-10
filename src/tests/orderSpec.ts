@@ -15,7 +15,7 @@ describe('Order Module', () => {
         expect(result).toBeFalsy();
     });
 
-    it('update method should update order\'s status', async () => {
+    it("update method should update order's status", async () => {
         storeorder.update('1');
         const result = await storeorder.show('1');
         expect(result?.status).toBeFalsy();
