@@ -16,22 +16,26 @@ describe('User Module', () => {
             username: 'testuser',
             password: 'password123',
         });
-        expect(result).toBeTruthy();
+        expect(result.id).toBeTruthy();
     });
 
     it('index method should return a list of users', async () => {
         const result = await storeuser.index();
-        expect(result.length > 0);
+        expect(result.length).toBeGreaterThanOrEqual(0);
     });
 
     it('show method should return the correct user', async () => {
         const result = await storeuser.show('1');
-        expect(result).toBeDefined;
+        expect(result?.id);
     });
 
     it('delete method should remove the user', async () => {
-        storeuser.delete('1');
-        const result = await storeuser.show('1');
+        const result = await storeuser.delete('1');
         expect(result).toBeFalsy();
+    });
+
+    it('auth method should authorize the user', async () => {
+        const result = await storeuser.auth('testuser', 'password123');
+        expect(result).toBeDefined();
     });
 });

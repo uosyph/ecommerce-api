@@ -11,16 +11,16 @@ describe('Dashboard Services', () => {
 
     it('topSoldProducts method should return a list of top sold products', async () => {
         const result = await dashboard.topSoldProds();
-        expect(result.length > 0);
+        expect(result.length).toBeGreaterThanOrEqual(0);
     });
 
     it('specificTopSoldProducts method should return a list of top 5 sold products', async () => {
         const result = await dashboard.specificTopSoldProds(5);
-        expect(result.length > 0);
+        expect(result.length).toBeLessThanOrEqual(5);
     });
 
     it('filterByCategory method should filter products by category', async () => {
         const result = await dashboard.filterByCategory('general');
-        expect(result.length > 0);
+        expect(result.length).toBeGreaterThanOrEqual(0);
     });
 });

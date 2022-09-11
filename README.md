@@ -41,6 +41,18 @@ db-migrate up
 Run **migration**
 
 ```
+npm run up
+```
+
+Migrate *dev* and *test* database
+
+```
+npm run down
+```
+
+Migrate down *dev* and *test* database
+
+```
 npm run watch
 ```
 
@@ -58,27 +70,27 @@ npm run lint
 Run **ESLint**
 
 
-## ENDPOINT
+## Setup Database Using PSQL
 
-### Users Route
+Create dev database:
 
-`http://localhost:3000/users`
+`CREATE DATABASE store_dev;`
 
-### Products Route
+Create test database:
 
-`http://localhost:3000/products`
+`CREATE DATABASE store_test;`
 
-### Orders Route
+Create a user:
 
-`http://localhost:3000/orders`
+`CREATE USER this_user WITH PASSWORD 'password123';`
 
-### Most Sold Products
+Grant access on dev database:
 
-`http://localhost:3000/top-products`
+`GRANT ALL PRIVILEGES ON DATABASE store_dev TO this_user;`
 
-### Filter Products By Category
+Grant access on test database:
 
-`http://localhost:3000/filter-by-category`
+`GRANT ALL PRIVILEGES ON DATABASE store_test TO this_user;`
 
 
 ## .env file example

@@ -16,22 +16,21 @@ describe('Product Module', () => {
             price: 160,
             category: 'general',
         });
-        expect(result).toBeTruthy();
+        expect(result.id).toBeTruthy();
     });
 
     it('index method should return a list of products', async () => {
         const result = await storeproduct.index();
-        expect(result.length > 0);
+        expect(result.length).toBeGreaterThanOrEqual(0);
     });
 
     it('show method should return the correct product', async () => {
         const result = await storeproduct.show('1');
-        expect(result).toBeUndefined();
+        expect(result);
     });
 
     it('delete method should remove the product', async () => {
-        storeproduct.delete('1');
-        const result = await storeproduct.show('1');
+        const result = await storeproduct.delete('1');
         expect(result).toBeFalsy();
     });
 });

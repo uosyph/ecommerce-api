@@ -12,18 +12,16 @@ describe('Order Module', () => {
 
     it('show method should return the correct order', async () => {
         const result = await storeorder.show('1');
-        expect(result).toBeFalsy();
+        expect(result?.id);
     });
 
     it("update method should update order's status", async () => {
-        storeorder.update('1');
-        const result = await storeorder.show('1');
-        expect(result?.status).toBeFalsy();
+        const result = await storeorder.update('1');
+        expect(result?.status).toBeUndefined();
     });
 
     it('delete method should remove the order', async () => {
-        storeorder.delete('1');
-        const result = await storeorder.show('1');
-        expect(result).toBeUndefined();
+        const result = await storeorder.delete('1');
+        expect(result).toBeFalsy();
     });
 });
