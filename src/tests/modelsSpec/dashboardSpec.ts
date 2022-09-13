@@ -1,4 +1,4 @@
-import { DashboardQueries } from '../services/models/dashboard';
+import { DashboardQueries } from '../../services/models/dashboard';
 
 const dashboard = new DashboardQueries();
 

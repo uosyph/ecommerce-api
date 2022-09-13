@@ -27,3 +27,4 @@ app.use('/orders', orders_1.default);
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 });
+exports.default = app;
