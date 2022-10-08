@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 <h1 align="center">
-  Storefront-Backend
+  E-Commerce API
 </h1>
 
 <p align="center">
