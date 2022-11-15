@@ -5,13 +5,13 @@
 </h1>
 
 <p align="center">
-  Udacity NANODEGREE Program - ( Second Project )
+<b>Second Project</b> for Advanced Full-Stack Web Development, NANODEGREE - Udacity.
 <br>
-  Marketplace backend for users to signup/login, view/create products, and make orders.
+A RESTful API connected to a database for a marketplace that lets users signup/login/delete account,
 <br>
-  (A Node.js API connected to a PostgreSQL database.)
+view/create/delete products, and make/cancel orders. Products can be filtered by category or most popular.
 <br>
-  - By : Yousef Saeed - 
+Passwords are hashed before being stored in the database, and users get authorized before doing a CRUD operation.
 </p>
 
 ---
